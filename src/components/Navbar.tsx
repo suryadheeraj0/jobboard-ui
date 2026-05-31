@@ -1,4 +1,4 @@
-import { Link, NavLink } from "react-router-dom";
+import { Link, NavLink, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { Briefcase, Menu, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -7,6 +7,7 @@ import { useAuth } from "@/contexts/AuthContext";
 export default function Navbar() {
   const [open, setOpen] = useState(false);
   const { user, logout } = useAuth();
+  const navigate = useNavigate();
 
   const links = [
     { to: "/", label: "Home" },
@@ -47,7 +48,7 @@ export default function Navbar() {
                 <Button asChild variant="ghost" size="sm">
                   <Link to={user.role === "ADMIN" ? "/admin" : "/dashboard"}>Dashboard</Link>
                 </Button>
-                <Button onClick={logout} size="sm" variant="outline">Sign out</Button>
+                <Button onClick={() => { logout(); navigate("/login"); }} size="sm" variant="outline">Sign out</Button>
               </>
             ) : (
               <>
@@ -92,7 +93,7 @@ export default function Navbar() {
                   Dashboard
                 </Link>
                 <button
-                  onClick={() => { logout(); setOpen(false); }}
+                  onClick={() => { logout(); navigate("/login"); setOpen(false); }}
                   className="w-full text-left px-3 py-2 rounded-lg text-sm font-medium hover:bg-muted"
                 >
                   Sign out
